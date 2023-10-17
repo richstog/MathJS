@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <button id="stopTimer">Кнопка</button>
+
+    <canvas id="c1" width="400" height="200" style="border: 3px solid black; margin: 40px;"></canvas>
+</body>
+<script>
+    const CANVAS_WIDTH = 400
+    const CANVAS_HEIGHT = 200
+    const OBJECT_WH = 20
+
+    let canvas = document.getElementById('c1')
+    let ctx = canvas.getContext('2d')
+    //ctx.clearRect(0, 0, 400, 200)
+
+    function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath()
+        ctx.moveTo(x1, y1)
+        ctx.lineTo(x2, y2)
+        ctx.strokeStyle = 'red'
+        ctx.lineWidth = '3'
+        ctx.stroke()
+    }
+    
+    const START_X = 50; const START_Y = 100;
+    let x = START_X; let y = START_Y;
+
+    let speed = 10;
+
+    let inter = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.fillRect(x, y, 20, 20)
+        drawLine(x, y, 0, 0)
+        drawLine(x+OBJECT_WH, y, CANVAS_WIDTH, 0)
+        drawLine(x+OBJECT_WH, y+OBJECT_WH, CANVAS_WIDTH, CANVAS_HEIGHT)
+        drawLine(x, y+OBJECT_WH, 0, CANVAS_HEIGHT)
+        
+        if (x === START_X) { speed = 10 }
+        else if (x === 300) { speed = -10 }
+        x += speed;
+    }, 100)
+    
+    document.getElementById('stopTimer').addEventListener('click', () => {
+        clearInterval(inter)
+    })
+</script>
+</html>

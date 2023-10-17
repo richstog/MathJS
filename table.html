@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script>
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms))
+        }
+        function Start() {
+            var matrix = [];
+            for (var i = 0; i < 8; i++) {
+                matrix[i] = [];
+
+                for (var j = 0; j < 8; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+
+            var container = document.getElementById("container");
+            for (var i = 0; i < 8; i++) {
+                for (var j = 0; j < 8; j++) {
+                    var button = document.createElement("button");
+                    button.id = "button" + i + j;
+                    button.innerText = '-'
+                    button.className = "inactive";
+                    button.onclick = function() {
+
+                        var row = parseInt(this.id.charAt(6));
+                        var col = parseInt(this.id.charAt(7));
+
+                        right_up_row_col = [row, col]
+                        right_down_row_col = [row, col]
+                        left_up_row_col = [row, col]
+                        left_down_row_col = [row, col]
+
+                        while (
+                            right_up_row_col[0] < 8 && right_up_row_col[0] >= 0 || right_up_row_col[1] < 8 && right_up_row_col[1] >= 0 &&
+                            right_down_row_col[0] < 8 && right_down_row_col[0] >= 0 || right_down_row_col[1] < 8 && right_down_row_col[1] >= 0 &&
+                            left_up_row_col[0] < 8 && left_up_row_col[0] >= 0 || left_up_row_col[1] < 8 && left_up_row_col[1] >= 0 &&
+                            left_down_row_col[0] < 8 && left_down_row_col[0] >= 0 || left_down_row_col[1] < 8 && left_down_row_col[1] >= 0
+                        ) {
+                            right_up_row_col[0] -= 1
+                            right_up_row_col[1] += 1
+                            right_down_row_col[0] += 1
+                            right_down_row_col[1] += 1
+                            left_up_row_col[0] += 1
+                            left_up_row_col[1] -= 1
+                            left_down_row_col[0] -= 1
+                            left_down_row_col[1] -= 1
+
+                            if (right_up_row_col[0] < 8 && right_up_row_col[0] >= 0 && right_up_row_col[1] < 8 && right_up_row_col[1] >= 0) {
+                                changeColor(right_up_row_col[0], right_up_row_col[1]);
+                            }
+
+                            if (right_down_row_col[0] < 8 && right_down_row_col[0] >= 0 && right_down_row_col[1] < 8 && right_down_row_col[1] >= 0) {
+                                changeColor(right_down_row_col[0], right_down_row_col[1]);
+                            }
+
+                            if (left_up_row_col[0] < 8 && left_up_row_col[0] >= 0 && left_up_row_col[1] < 8 && left_up_row_col[1] >= 0) { 
+                                changeColor(left_up_row_col[0], left_up_row_col[1]);
+                            }
+
+                            if (left_down_row_col[0] < 8 && left_down_row_col[0] >= 0 && left_down_row_col[1] < 8 && left_down_row_col[1] >= 0) {
+                                changeColor(left_down_row_col[0], left_down_row_col[1]);
+                            }
+                        }
+                    };
+                container.appendChild(button);
+                }
+                var br = document.createElement("br");
+                container.appendChild(br);
+            }
+
+            // Функция для изменения цвета кнопки
+            function changeColor(row, col) {
+              // Проверяем, что координаты находятся в пределах матрицы
+                if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+                    var button = document.getElementById("button" + row + col);
+                    if (button.className === "inactive") {
+                      button.className = "active";
+                      button.style.backgroundColor = 'red'
+                    } else {
+                      button.className = "inactive";
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="Start()"></button>
+    <div id="container"></div>
+</body>
+</html>
